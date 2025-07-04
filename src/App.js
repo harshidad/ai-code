@@ -1,23 +1,25 @@
 import logo from './logo.svg';
 import './App.css';
-
+import InputURL from './InputURL';
+import React, {useState} from 'react';
+import PagePreview from './PagePreview';
 function App() {
+    const [html, setHtml] = useState('');
+  const handleLoadPage=(url)=>{
+      fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
+     .then(res => res.json())
+     .then(res=> setHtml(res.contents))
+  }
+  // const handleLoadPage = async (url) => {
+  //   const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+  //   const data = await res.json();
+  //   setHtml(data.contents);
+  // };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <InputURL onSubmit={handleLoadPage}></InputURL>
+      <PagePreview html={html}></PagePreview>
     </div>
   );
 }
